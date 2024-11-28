@@ -1,14 +1,14 @@
 import discord
 from discord.ext import commands
-from discord.ext.commands.errors import CommandError, CommandNotFound
 
 import cmds
+import msgs
 
 
 class Bot(commands.Bot):
     def __init__(self) -> None:
         super(Bot, self).__init__(
-            command_prefix="!",
+            command_prefix="/",
             intents=discord.Intents.default()
         )
 
@@ -17,8 +17,4 @@ class Bot(commands.Bot):
             cmds.Commands(self)
         )
         await self.tree.sync()
-        print("Bot is ready! OwO.")
-
-    async def on_command_error(self, ctx: commands.Context, error: CommandError) -> None:
-        if not isinstance(error, CommandNotFound):
-            raise error
+        print(msgs.BOT_READY)

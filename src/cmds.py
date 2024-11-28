@@ -6,6 +6,7 @@ from discord.ext import commands
 import cfg
 import dbman
 import embeds
+import msgs
 
 
 class Commands(commands.Cog):
@@ -26,14 +27,14 @@ class Commands(commands.Cog):
     async def add_points(self, interaction: discord.Interaction, user: discord.User, points: float) -> None:
         if interaction.user.id not in cfg.ADMIN_LIST:
             await interaction.response.send_message(
-                embed=await embeds.message("You're not allowed to use this command."),
+                embed=await embeds.message(msgs.NOT_ALLOWED),
                 ephemeral=True,
             )
             return
         self.db.update_user(user.id, points)
         new_bal = self.db.fetch_points(user.id)
         await interaction.response.send_message(
-            embed=await embeds.message(f"Changed `@{user.name}`'s balance by {points}. Their current balance is {new_bal} femboy points."),
+            embed=await embeds.message(msgs.PTS_UPDATE.format(user.name, points, new_bal)),
         )
 
     @app_commands.allowed_installs(users=True)
@@ -45,7 +46,7 @@ class Commands(commands.Cog):
     async def my_points(self, interaction: discord.Interaction) -> None:
         bal = self.db.fetch_points(interaction.user.id)
         await interaction.response.send_message(
-            embed=await embeds.message(f"You have {bal} femboy points."),
+            embed=await embeds.message(msgs.MY_BAL.format(bal)),
             ephemeral=True,
         )
 
@@ -61,7 +62,7 @@ class Commands(commands.Cog):
     async def view_points(self, interaction: discord.Interaction, user: discord.User) -> None:
         bal = self.db.fetch_points(user.id)
         await interaction.response.send_message(
-            embed=await embeds.message(f"`@{user.name}`'s current balance is {bal} femboy points."),
+            embed=await embeds.message(msgs.USER_BAL.format(user.name, bal)),
         )
 
     @app_commands.allowed_installs(users=True)
