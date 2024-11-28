@@ -1,0 +1,4 @@
+.vscode/
+src/__pycache__/
+src/cfg.py
+src/main.db
