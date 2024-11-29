@@ -29,7 +29,7 @@ class Database:
             "SELECT discord_id FROM global",
         )
         count = 0
-        while _ := r.fetchone():
+        while r.fetchone():
             count += 1
         return count
 
