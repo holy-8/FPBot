@@ -74,7 +74,7 @@ class Commands(commands.Cog):
     @app_commands.describe(
         page=f"Page number, must be greater than 0. Each page shows {cfg.PAGE_SIZE} results.",
     )
-    async def leaderboard(self, interaction: discord.Interaction, page: int) -> None:
+    async def leaderboard(self, interaction: discord.Interaction, page: int = 1) -> None:
         try:
             leaderboard = self.db.leaderboard(page, cfg.PAGE_SIZE)
         except ValueError:
