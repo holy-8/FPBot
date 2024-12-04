@@ -14,6 +14,7 @@ async def leaderboard(bot: commands.Bot, ldb: list[tuple[int, int]], page: int, 
     e = Embed(title="Leaderboard", colour=Colour.pink())
     e.set_footer(text=f"Page {page} of {last_page}")
     for place, data in enumerate(ldb, (page - 1) * cfg.PAGE_SIZE + 1):
-        user = await bot.fetch_user(data[0])
-        e.add_field(name=f"{place}. `@{user.name}`: {data[1]}", value="", inline=False)
+        id, points = data
+        user = await bot.fetch_user(id)
+        e.add_field(name=f"{place}. `@{user.name}`: {points:.2f}", value="", inline=False)
     return e
